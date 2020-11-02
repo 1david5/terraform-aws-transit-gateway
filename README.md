@@ -39,4 +39,3 @@
 | tgw\_module\_configuration | n/a |
 | tgw\_peering\_attachment\_ids | IDs of the transit gateway peering attachments |
 | transit\_gateway\_id | EC2 Transit Gateway identifier |
-
