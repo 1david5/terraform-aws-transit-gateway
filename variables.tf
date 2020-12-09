@@ -48,7 +48,8 @@ variable "tgw_config" {
       tags = map(string)
     }))
   })
-  description = ""
+  description = "Configuration for VPC attachments, TGW peering attachments, Route Table association, propagation, static routes and VPC and TGW accepters. Set key's values to `null` to prevent resource creation"
+  default     = null
 }
 
 ##############################################################################################

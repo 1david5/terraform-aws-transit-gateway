@@ -1,53 +1,7 @@
-##############################################################################################
-# aws_ec2_transit_gateway
-##############################################################################################
-
-# output "transit_gateway_arn" {
-#   description = "EC2 Transit Gateway Amazon Resource Name (ARN)"
-#   value       = aws_ec2_transit_gateway.this[*].arn
-# }
-
-# output "tgw_association_default_route_table_id" {
-#   description = "Identifier of the default association route table"
-#   value       = aws_ec2_transit_gateway.this[*].association_default_route_table_id
-# }
-
 output "transit_gateway_id" {
-  description = "EC2 Transit Gateway identifier"
+  description = "Transit Gateway identifier"
   value       = try(aws_ec2_transit_gateway.this[0].id, null)
 }
-
-# output "transit_gateway_owner_id" {
-#   description = "Identifier of the AWS account that owns the EC2 Transit Gateway"
-#   value       = aws_ec2_transit_gateway.this[*].owner_id
-# }
-
-# output "transit_gateway_propagation_default_route_table_id" {
-#   description = "Identifier of the default propagation route table"
-#   value       = aws_ec2_transit_gateway.this[*].propagation_default_route_table_id
-# }
-
-##############################################################################################
-# aws_ec2_transit_gateway_route_table
-##############################################################################################
-
-# output "default_association_route_table" {
-#   description = "Boolean whether this is the default association route table for the EC2 Transit Gateway."
-#   value       = { for rt in var.tgw_route_table_names : rt => aws_ec2_transit_gateway_route_table.transit_gateway_route_table[rt].default_association_route_table }
-# }
-
-# output "default_propagation_route_table" {
-#   description = "Boolean whether this is the default propagation route table for the EC2 Transit Gateway."
-#   value       = { for rt in var.tgw_route_table_names : rt => aws_ec2_transit_gateway_route_table.transit_gateway_route_table[rt].default_propagation_route_table }
-# }
-
-# output "transit_gateway_route_table_id" {
-#   value = { for rt in var.tgw_route_table_names : rt => aws_ec2_transit_gateway_route_table.transit_gateway_route_table[rt].id }
-# }
-
-##############################################################################################
-# TGW Peering Attachment and Accepter
-##############################################################################################
 
 output "tgw_peering_attachment_ids" {
   description = "IDs of the transit gateway peering attachments"
@@ -55,6 +9,7 @@ output "tgw_peering_attachment_ids" {
 }
 
 output "tgw_module_configuration" {
+  description = "Map with all data from TGW, route table, associations, propagations, routes and accepters created by this module"
   value = {
     "tgw_name" = try(aws_ec2_transit_gateway.this[0].tags["Name"], null)
     "tgw_id"   = try(aws_ec2_transit_gateway.this[0].id, null)

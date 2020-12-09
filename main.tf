@@ -28,6 +28,7 @@ locals {
 ############################################################################################################
 # Transit_Gateway
 ############################################################################################################
+
 resource "aws_ec2_transit_gateway" "this" {
   count = var.create_transit_gateway ? 1 : 0
 
@@ -44,6 +45,7 @@ resource "aws_ec2_transit_gateway" "this" {
 ############################################################################################################
 # TGW_Route_Table
 ############################################################################################################
+
 resource "aws_ec2_transit_gateway_route_table" "this" {
   count = var.create_transit_gateway_route_table ? 1 : 0
 
@@ -89,6 +91,7 @@ resource "aws_ec2_transit_gateway_route" "this" {
 ############################################################################################################
 # TGW_Peering
 ############################################################################################################
+
 resource "aws_ec2_transit_gateway_peering_attachment" "this" {
   for_each                = local.tgw_peering_attachments
   peer_account_id         = each.value.peer_account_id
@@ -107,6 +110,7 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "this" {
 ############################################################################################################
 # TGW_VPC
 ############################################################################################################
+
 resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
   for_each                                        = local.tgw_vpc_attachments
   subnet_ids                                      = each.value.subnet_id
