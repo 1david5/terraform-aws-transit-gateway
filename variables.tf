@@ -1,11 +1,14 @@
 variable "tgw_config" {
   type = object({
-
     tgw_vpc_attachments = map(object({
       vpc_id         = string
       subnet_id      = set(string)
       rt_association = bool
       rt_propagation = bool
+      subnet_route_table = set(object({
+        route_table_ids      = set(string)
+        route_to_cidr_blocks = set(string)
+      }))
       static_routes = set(object({
         blackhole              = bool
         destination_cidr_block = string
@@ -19,6 +22,10 @@ variable "tgw_config" {
       rt_propagation                                  = bool
       transit_gateway_default_route_table_association = bool
       transit_gateway_default_route_table_propagation = bool
+      subnet_route_table = set(object({
+        route_table_ids      = set(string)
+        route_to_cidr_blocks = set(string)
+      }))
       static_routes = set(object({
         blackhole              = bool
         destination_cidr_block = string
@@ -49,13 +56,17 @@ variable "tgw_config" {
     }))
   })
   description = "Configuration for VPC attachments, TGW peering attachments, Route Table association, propagation, static routes and VPC and TGW accepters. Set key's values to `null` to prevent resource creation"
-  default     = null
+  default = {
+    tgw_vpc_attachments              = null
+    tgw_vpc_attachment_accepters     = null
+    tgw_peering_attachments          = null
+    tgw_peering_attachment_accepters = null
+  }
 }
 
 ##############################################################################################
 # aws_ec2_transit_gateway
 ##############################################################################################
-
 variable "existing_transit_gateway_id" {
   type        = string
   description = "Existing Transit Gateway ID. If provided, the module will not create a Transit Gateway but instead will use the existing one"

@@ -17,12 +17,15 @@ locals {
 
   all_attachments_and_accepters = merge(local.tgw_vpc_attachments, local.tgw_peering_attachments, local.tgw_vpc_attachment_accepters, local.tgw_peering_attachment_accepters)
 
-  att_and_acc_w_static_routes = { for att, config in local.all_attachments_and_accepters : att => config.static_routes if config.rt_association == true && config.static_routes != null && try(config.rt_propagation, false) == false }
+  att_and_acc_w_static_routes = { for att, config in local.all_attachments_and_accepters : att => config.static_routes if config.rt_association == true && config.static_routes != null && config.static_routes != [] && try(config.rt_propagation, false) == false }
 
   static_route_list = flatten([for att, config in local.att_and_acc_w_static_routes : [for i in range(length(config)) : merge({ "att" = att }, tolist(config)[i])]])
 
   # Need a static route map to build aws_ec2_transit_gateway_route resources since a list/set of maps (local.static_route_list) cannot be used in for_each
   static_route_map = try(zipmap(concat([for att, st_list in local.att_and_acc_w_static_routes : [for i in range(length(st_list)) : "${att}_static_route_${i}"]]...), local.static_route_list), {})
+
+  att_and_acc_w_subnet_routes = { for att, config in merge(local.tgw_vpc_attachments, local.tgw_vpc_attachment_accepters) : att => config.subnet_route_table if config.subnet_route_table != [] && config.subnet_route_table != null }
+
 }
 
 ############################################################################################################
@@ -135,4 +138,15 @@ resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
   transit_gateway_default_route_table_association = false
   transit_gateway_default_route_table_propagation = false
   tags                                            = each.value.tags
+}
+
+############################################################################################################
+# Subnet_Route
+############################################################################################################
+module "subnet_route" {
+  source             = "./modules/subnet_route"
+  for_each           = local.att_and_acc_w_subnet_routes
+  transit_gateway_id = local.transit_gateway_id
+  attachment_name    = each.key
+  attachment_config  = each.value
 }
