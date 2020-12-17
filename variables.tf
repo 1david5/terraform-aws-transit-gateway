@@ -55,7 +55,7 @@ variable "tgw_config" {
 ##############################################################################################
 # aws_ec2_transit_gateway
 ##############################################################################################
-variable "existing_tranist_gateway_id" {
+variable "existing_transit_gateway_id" {
   type        = string
   description = "Existing Transit Gateway ID. If provided, the module will not create a Transit Gateway but instead will use the existing one"
   default     = null
@@ -125,7 +125,7 @@ variable "vpn_ecmp_support" {
 # aws_ec2_transit_gateway_route_table
 ##############################################################################################
 
-variable "existing_tranist_gateway_route_table" {
+variable "existing_transit_gateway_route_table" {
   type        = string
   description = "Existing Transit Gateway Route Table ID. If provided, the module will not create a Transit Gateway Route Table but instead will use the existing one"
   default     = null

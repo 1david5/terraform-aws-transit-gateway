@@ -3,9 +3,9 @@
 ############################################################################################################
 
 locals {
-  transit_gateway_id = var.existing_tranist_gateway_id != null && var.existing_tranist_gateway_id != "" ? var.existing_tranist_gateway_id : (var.create_transit_gateway != null ? try(aws_ec2_transit_gateway.this[0].id, null) : null)
+  transit_gateway_id = var.existing_transit_gateway_id != null && var.existing_transit_gateway_id != "" ? var.existing_transit_gateway_id : (var.create_transit_gateway != null ? try(aws_ec2_transit_gateway.this[0].id, null) : null)
 
-  transit_gateway_route_table_id = var.existing_tranist_gateway_route_table != null && var.existing_tranist_gateway_route_table != "" ? var.existing_tranist_gateway_route_table : (var.create_transit_gateway_route_table != null ? try(aws_ec2_transit_gateway_route_table.this[0].id, null) : null)
+  transit_gateway_route_table_id = var.existing_transit_gateway_route_table != null && var.existing_transit_gateway_route_table != "" ? var.existing_transit_gateway_route_table : (var.create_transit_gateway_route_table != null ? try(aws_ec2_transit_gateway_route_table.this[0].id, null) : null)
 
   tgw_vpc_attachments = var.tgw_config["tgw_vpc_attachments"] != null ? var.tgw_config["tgw_vpc_attachments"] : {}
 
