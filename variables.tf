@@ -55,6 +55,7 @@ variable "tgw_config" {
 ##############################################################################################
 # aws_ec2_transit_gateway
 ##############################################################################################
+
 variable "existing_transit_gateway_id" {
   type        = string
   description = "Existing Transit Gateway ID. If provided, the module will not create a Transit Gateway but instead will use the existing one"
